@@ -1,264 +1,192 @@
-# 📦 Project Setup
+# Module 8: Build and Test Your First Web Application with FastAPI
 
----
+## Project Overview
 
-# 🧩 1. Install Homebrew (Mac Only)
+This project enhances a FastAPI-based calculator web application by implementing unit, integration, and end-to-end (E2E) tests. It also incorporates application logging and continuous integration (CI) using GitHub Actions.
 
-> Skip this step if you're on Windows.
+The application allows users to perform basic arithmetic operations through a web interface and verifies their functionality through automated testing.
 
-Homebrew is a package manager for macOS.  
-You’ll use it to easily install Git, Python, Docker, etc.
+## Objectives
 
-**Install Homebrew:**
+- Build and run a FastAPI calculator web application.
+- Implement unit tests for arithmetic operations.
+- Implement integration tests for API endpoints.
+- Implement end-to-end tests using Playwright.
+- Add logging to track application operations and errors.
+- Configure GitHub Actions to automatically run tests on code pushes.
 
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+## Features
+
+- **FastAPI Web Application:** Provides a web interface for the calculator.
+- **Arithmetic Operations:** Supports addition, subtraction, multiplication, and division.
+- **Error Handling:** Handles division by zero and invalid requests.
+- **Unit Testing:** Tests the individual arithmetic operations.
+- **Integration Testing:** Tests API endpoints and their responses.
+- **End-to-End Testing:** Uses Playwright to simulate user interactions with the calculator.
+- **Logging:** Records application activity and errors.
+- **Continuous Integration:** Runs automated tests through GitHub Actions.
+
+## Technologies Used
+
+- Python 3.12
+- FastAPI
+- Uvicorn
+- Pydantic
+- Pytest
+- Playwright
+- HTML, CSS, and JavaScript
+- Git and GitHub
+- GitHub Actions
+- Docker and Docker Compose
+
+## Project Structure
+
+```text
+module8_is601/
+├── .github/
+│   └── workflows/
+│       └── ...
+├── app/
+│   └── operations/
+│       └── __init__.py
+├── templates/
+│   └── index.html
+├── tests/
+│   ├── unit/
+│   │   └── test_calculator.py
+│   ├── integration/
+│   │   └── test_fastapi_calculator.py
+│   ├── e2e/
+│   │   └── test_e2e.py
+│   └── conftest.py
+├── main.py
+├── requirements.txt
+├── pytest.ini
+├── Dockerfile
+├── docker-compose.yml
+└── README.md
 ```
 
-**Verify Homebrew:**
+*Note: The structure above illustrates the main project files. The exact workflow filename and additional files may vary.*
+
+## Installation and Setup
+
+### 1. Clone the repository
 
 ```bash
-brew --version
+git clone YOUR_GITHUB_REPOSITORY_URL
+cd module8_is601
 ```
 
-If you see a version number, you're good to go.
+Replace `YOUR_GITHUB_REPOSITORY_URL` with your repository URL.
 
----
+### 2. Create and activate a virtual environment
 
-# 🧩 2. Install and Configure Git
-
-## Install Git
-
-- **MacOS (using Homebrew)**
-
-```bash
-brew install git
-```
-
-- **Windows**
-
-Download and install [Git for Windows](https://git-scm.com/download/win).  
-Accept the default options during installation.
-
-**Verify Git:**
-
-```bash
-git --version
-```
-
----
-
-## Configure Git Globals
-
-Set your name and email so Git tracks your commits properly:
-
-```bash
-git config --global user.name "Your Name"
-git config --global user.email "your_email@example.com"
-```
-
-Confirm the settings:
-
-```bash
-git config --list
-```
-
----
-
-## Generate SSH Keys and Connect to GitHub
-
-> Only do this once per machine.
-
-1. Generate a new SSH key:
-
-```bash
-ssh-keygen -t ed25519 -C "your_email@example.com"
-```
-
-(Press Enter at all prompts.)
-
-2. Start the SSH agent:
-
-```bash
-eval "$(ssh-agent -s)"
-```
-
-3. Add the SSH private key to the agent:
-
-```bash
-ssh-add ~/.ssh/id_ed25519
-```
-
-4. Copy your SSH public key:
-
-- **Mac/Linux:**
-
-```bash
-cat ~/.ssh/id_ed25519.pub | pbcopy
-```
-
-- **Windows (Git Bash):**
-
-```bash
-cat ~/.ssh/id_ed25519.pub | clip
-```
-
-5. Add the key to your GitHub account:
-   - Go to [GitHub SSH Settings](https://github.com/settings/keys)
-   - Click **New SSH Key**, paste the key, save.
-
-6. Test the connection:
-
-```bash
-ssh -T git@github.com
-```
-
-You should see a success message.
-
----
-
-# 🧩 3. Clone the Repository
-
-Now you can safely clone the course project:
-
-```bash
-git clone <repository-url>
-cd <repository-directory>
-```
-
----
-
-# 🛠️ 4. Install Python 3.10+
-
-## Install Python
-
-- **MacOS (Homebrew)**
-
-```bash
-brew install python
-```
-
-- **Windows**
-
-Download and install [Python for Windows](https://www.python.org/downloads/).  
-✅ Make sure you **check the box** `Add Python to PATH` during setup.
-
-**Verify Python:**
-
-```bash
-python3 --version
-```
-or
-```bash
-python --version
-```
-
----
-
-## Create and Activate a Virtual Environment
-
-(Optional but recommended)
+On Ubuntu or Linux:
 
 ```bash
 python3 -m venv venv
-source venv/bin/activate   # Mac/Linux
-venv\Scripts\activate.bat  # Windows
+source venv/bin/activate
 ```
 
-### Install Required Packages
+### 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
----
-
-# 🐳 5. (Optional) Docker Setup
-
-> Skip if Docker isn't used in this module.
-
-## Install Docker
-
-- [Install Docker Desktop for Mac](https://www.docker.com/products/docker-desktop/)
-- [Install Docker Desktop for Windows](https://www.docker.com/products/docker-desktop/)
-
-## Build Docker Image
+### 4. Install Playwright browsers and dependencies
 
 ```bash
-docker build -t <image-name> .
+playwright install
+playwright install-deps
 ```
 
-## Run Docker Container
+These commands install the browsers and required system libraries for end-to-end testing on supported Linux environments.
+
+## Running the Application
+
+Start the FastAPI development server:
 
 ```bash
-docker run -it --rm <image-name>
+uvicorn main:app --reload --host 127.0.0.1 --port 8000
 ```
 
----
+Open the application in a browser:
 
-# 🚀 6. Running the Project
+http://localhost:8000
 
-- **Without Docker**:
+Enter two numbers and select an arithmetic operation to view the result.
+
+## Running the Tests
+
+Run the complete test suite:
 
 ```bash
-python main.py
+pytest
 ```
 
-(or update this if the main script is different.)
+Run specific test categories:
 
-- **With Docker**:
+**Unit tests**
 
 ```bash
-docker run -it --rm <image-name>
+pytest tests/unit/
 ```
 
----
-
-# 📝 7. Submission Instructions
-
-After finishing your work:
+**Integration tests**
 
 ```bash
-git add .
-git commit -m "Complete Module X"
-git push origin main
+pytest tests/integration/
 ```
 
-Then submit the GitHub repository link as instructed.
+**End-to-end tests**
 
----
+```bash
+pytest tests/e2e/
+```
 
-# 🔥 Useful Commands Cheat Sheet
+The tests verify arithmetic operations, API responses, browser interactions, and error handling.
 
-| Action                         | Command                                          |
-| ------------------------------- | ------------------------------------------------ |
-| Install Homebrew (Mac)          | `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"` |
-| Install Git                     | `brew install git` or Git for Windows installer |
-| Configure Git Global Username  | `git config --global user.name "Your Name"`      |
-| Configure Git Global Email     | `git config --global user.email "you@example.com"` |
-| Clone Repository                | `git clone <repo-url>`                          |
-| Create Virtual Environment     | `python3 -m venv venv`                           |
-| Activate Virtual Environment   | `source venv/bin/activate` / `venv\Scripts\activate.bat` |
-| Install Python Packages        | `pip install -r requirements.txt`               |
-| Build Docker Image              | `docker build -t <image-name> .`                |
-| Run Docker Container            | `docker run -it --rm <image-name>`               |
-| Push Code to GitHub             | `git add . && git commit -m "message" && git push` |
+## Logging and Error Handling
 
----
+The application uses Python's logging module to record application events and errors. FastAPI exception handlers return appropriate JSON error responses for HTTP exceptions and request validation errors.
 
-# 📋 Notes
+Division by zero is handled with an error response rather than returning a normal calculation result.
 
-- Install **Homebrew** first on Mac.
-- Install and configure **Git** and **SSH** before cloning.
-- Use **Python 3.10+** and **virtual environments** for Python projects.
-- **Docker** is optional depending on the project.
+## Continuous Integration with GitHub Actions
 
----
+GitHub Actions is configured to run automated tests when code is pushed to the repository. This helps verify that the application and its tests continue to work as changes are made.
 
-# 📎 Quick Links
+The workflow results can be viewed in the **Actions** tab of the GitHub repository.
 
-- [Homebrew](https://brew.sh/)
-- [Git Downloads](https://git-scm.com/downloads)
-- [Python Downloads](https://www.python.org/downloads/)
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-- [GitHub SSH Setup Guide](https://docs.github.com/en/authentication/connecting-to-github-with-ssh)
+## Docker
+
+The project includes Docker configuration for building and running the application in a container.
+
+To build and start the application using Docker Compose:
+
+```bash
+docker compose up --build
+```
+
+Stop the running containers with `Ctrl + C`.
+
+## Test Results
+
+The local test suite completed successfully with **29 tests passed**.
+
+The test suite includes:
+- Unit tests for arithmetic operations.
+- Integration tests for FastAPI endpoints.
+- End-to-end tests for the calculator web interface and division-by-zero handling.
+
+## Assignment Deliverables
+
+- GitHub repository containing the application code, tests, dependencies, and GitHub Actions workflow.
+- Screenshot of a successful GitHub Actions workflow run.
+- Screenshot of the calculator application running in a web browser.
+
+## Conclusion
+
+This project demonstrates the development and testing of a FastAPI web application using automated testing, logging, version control, and continuous integration. It provides practice in verifying application functionality at the unit, integration, and end-to-end levels.
