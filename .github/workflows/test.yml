@@ -38,26 +38,16 @@ jobs:
          pytest tests/integration/
          pytest tests/e2e/
 
+
  security:
    needs: test
    runs-on: ubuntu-latest
    steps:
      - uses: actions/checkout@v4
-     
+
      - name: Build image
-     - name: Run Trivy vulnerability scanner
-       run: |
-         docker run --rm \
-           -v /var/run/docker.sock:/var/run/docker.sock \
-           -v ${{ github.workspace }}/.trivy-cache:/root/.cache/ \
-           aquasec/trivy:latest image \
-           --skip-files "**/pip/_vendor/bom.cdx.json" \
-           --format table \
-           --exit-code 1 \
-           --ignore-unfixed \
-           --severity CRITICAL,HIGH \
-           app:test       run: docker build -t app:test .
-     
+       run: docker build -t app:test .
+
      - name: Run Trivy vulnerability scanner
        uses: aquasecurity/trivy-action@master
        with:
@@ -86,8 +76,8 @@ jobs:
        with:
          push: true
          tags: |
-           kaw393939/601_module8:latest
-           kaw393939/601_module8:${{ github.sha }}
+           codeec/601_module8:latest
+           codeec/601_module8:${{ github.sha }}
          platforms: linux/amd64,linux/arm64
-         cache-from: type=registry,ref=kaw393939/601_module8:cache
+         cache-from: type=registry,ref=kaw39/codeec_module8:cache
          cache-to: type=inline,mode=max
