@@ -6,11 +6,12 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 WORKDIR /app
 
 RUN apt-get update && \
-   apt-get upgrade -y && \
-   apt-get install -y --no-install-recommends gcc python3-dev libssl-dev && \
-   rm -rf /var/lib/apt/lists/* && \
-   python -m pip install --upgrade pip "setuptools>=84.2.1" "wheel>=0.48.0" && \
-   useradd -r -g appgroup appuser
+    apt-get upgrade -y && \
+    apt-get install -y --no-install-recommends gcc python3-dev libssl-dev curl && \
+    rm -rf /var/lib/apt/lists/* && \
+    python -m pip install --upgrade pip "setuptools>=84.2.1" "wheel>=0.48.0" && \
+    groupadd -r appgroup && \
+    useradd -r -g appgroup appuser
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
