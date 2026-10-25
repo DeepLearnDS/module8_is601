@@ -9,8 +9,7 @@ RUN apt-get update && \
    apt-get upgrade -y && \
    apt-get install -y --no-install-recommends gcc python3-dev libssl-dev && \
    rm -rf /var/lib/apt/lists/* && \
-   python -m pip install --upgrade pip "setuptools>=78.1.1" "wheel>=0.46.2" && \
-   groupadd -r appgroup && \
+   python -m pip install --upgrade pip "setuptools>=84.2.1" "wheel>=0.48.0" && \
    useradd -r -g appgroup appuser
 
 COPY requirements.txt .
